@@ -24,8 +24,19 @@
 	let speechEnabled = false; // Global speech toggle
 
 	// Gemini API configuration (loaded from environment)
+	//const geminiConfig: AIServiceConfig = {
+	//	apiKey: import.meta.env.VITE_GEMINI_API_KEY || "your-gemini-api-key",
+	//	modelName: import.meta.env.VITE_AI_MODEL_NAME || "gemini-1.5-flash",
+	//	rateLimitConfig: {
+	//		maxRequests: 50,
+	//		windowMs: 60000
+	//	}
+	//};
 	const geminiConfig: AIServiceConfig = {
-		apiKey: import.meta.env.VITE_GEMINI_API_KEY || "your-gemini-api-key",
+		apiKey: import.meta.env.VITE_GEMINI_API_KEY || 
+				// For GitHub Pages, you can embed the key or prompt user
+				prompt('Please enter your Gemini API key:') || 
+				'demo-mode',
 		modelName: import.meta.env.VITE_AI_MODEL_NAME || "gemini-1.5-flash",
 		rateLimitConfig: {
 			maxRequests: 50,
