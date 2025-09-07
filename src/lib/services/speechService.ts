@@ -100,19 +100,9 @@ export class SpeechService {
 	}
 
 	private findBestVoice(voices: SpeechSynthesisVoice[]): string | null {
-		console.log('🎤 ALL AVAILABLE VOICES:');
-		voices.forEach((v, index) => {
-			console.log(`${index + 1}. ${v.name} (${v.lang}) - Default: ${v.default}, Local: ${v.localService}`);
-		});
-
 		// ONLY use en-US voices - no fallbacks to other languages
 		const enUSVoices = voices.filter(v => v.lang === 'en-US' || v.lang === 'en_US');
 		
-		console.log('🎤 EN-US VOICES ONLY:');
-		enUSVoices.forEach((v, index) => {
-			console.log(`${index + 1}. ${v.name} (${v.lang}) - Default: ${v.default}, Local: ${v.localService}`);
-		});
-
 		if (enUSVoices.length === 0) {
 			console.log('❌ No en-US voices available!');
 			return null;
@@ -120,7 +110,7 @@ export class SpeechService {
 
 		// Use the first en-US voice available
 		const selectedVoice = enUSVoices[0];
-		console.log('🎤 SELECTED VOICE:', selectedVoice.name, '(' + selectedVoice.lang + ')');
+		console.log('🎤 Selected voice:', selectedVoice.name);
 		return selectedVoice.name;
 	}
 
@@ -187,12 +177,7 @@ export class SpeechService {
 		this.currentUtterance.volume = options.volume || 1.0;
 		this.currentUtterance.lang = options.lang || 'en-US';
 
-		console.log('🎤 Utterance settings:', {
-			rate: this.currentUtterance.rate,
-			pitch: this.currentUtterance.pitch,
-			volume: this.currentUtterance.volume,
-			lang: this.currentUtterance.lang
-		});
+		// Utterance configured with settings
 
 		// Set event handlers
 		this.currentUtterance.onstart = () => {

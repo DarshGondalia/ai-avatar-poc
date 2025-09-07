@@ -133,14 +133,21 @@ Always prioritize safety and recommend authorized Triumph dealers for complex re
 		const startTime = Date.now();
 
 		try {
+			console.log('🤖 AI Service Debug - Starting request');
+			console.log('🤖 Original user message:', userMessage);
+			console.log('🤖 Conversation history length:', conversationHistory.length);
+			
 			// Sanitize input text to prevent encoding issues
 			const sanitizedUserMessage = this.sanitizeText(userMessage);
+			console.log('🤖 Sanitized user message:', sanitizedUserMessage);
 			
 			// Build conversation context with sanitized text
 			const contextMessages = conversationHistory
 				.slice(-10) // Keep last 10 exchanges for context
 				.map(msg => `${msg.role === 'user' ? 'User' : 'Dominic'}: ${this.sanitizeText(msg.content)}`)
 				.join('\n\n');
+
+			console.log('🤖 Context messages:', contextMessages);
 
 			const prompt = `${this.systemPrompt}
 
@@ -151,9 +158,19 @@ Current user message: ${sanitizedUserMessage}
 
 Please respond as Dominic Toretto, the Triumph motorcycle specialist (remember: 50-100 words unless technical detail requires more):`;
 
+			console.log('🤖 Final prompt length:', prompt.length);
+			console.log('🤖 Final prompt preview:', prompt.substring(0, 200) + '...');
+			console.log('🤖 API Key available:', !!this.model);
+			console.log('🤖 Making Gemini API request...');
+
 			const result = await this.model.generateContent(prompt);
+			console.log('🤖 API request successful, processing response...');
+			
 			const response = await result.response;
 			const text = response.text();
+			
+			console.log('🤖 Response received:', text.substring(0, 100) + '...');
+			console.log('🤖 Response full length:', text.length);
 
 			const processingTime = Date.now() - startTime;
 
@@ -168,7 +185,14 @@ Please respond as Dominic Toretto, the Triumph motorcycle specialist (remember: 
 			};
 
 		} catch (error) {
-			console.error('AI Response Error:', error);
+			console.error('🤖 AI Response Error - Full details:', error);
+			console.error('🤖 Error type:', typeof error);
+			console.error('🤖 Error message:', error instanceof Error ? error.message : String(error));
+			console.error('🤖 Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+			
+			// Log the prompt that caused the error
+			console.error('🤖 Failed prompt length:', prompt?.length || 'unknown');
+			console.error('🤖 User message that caused error:', userMessage);
 			
 			// Provide fallback response
 			return {
