@@ -62,9 +62,9 @@ jspm_packages/
 tmp/
 temp/
 
-# Avatar assets (large files)
-static/avatars/*.glb
-static/avatars/*.gltf
+# Avatar assets (large files) - Commented out to include in deployment
+# static/avatars/*.glb
+# static/avatars/*.gltf
 
 # Speech assets (optional, can be large)
 static/mespeak/voices/
