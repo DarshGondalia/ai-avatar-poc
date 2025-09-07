@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": true,
+		"target": "esnext",
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"allowImportingTsExtensions": false,
+		"verbatimModuleSyntax": false,
+		"isolatedModules": true,
+		"preserveValueImports": false,
+		"lib": ["esnext", "DOM", "DOM.Iterable"],
+		"types": ["vite/client", "@sveltejs/kit"]
+	},
+	"extends": "./.svelte-kit/tsconfig.json"
+}

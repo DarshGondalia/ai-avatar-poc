@@ -1,0 +1,18 @@
+{
+  "name": "AI Avatar PoC - Motorcycle Expert",
+  "short_name": "AI Avatar PoC",
+  "description": "Interactive AI Avatar for Client-Coach Portal with Motorcycle Expertise",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["education", "productivity"],
+  "screenshots": []
+}

@@ -1,0 +1,52 @@
+{
+  "name": "ai-avatar-poc",
+  "version": "1.0.0",
+  "description": "Interactive AI Avatar Web Application for Client-Coach Portal",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "lint": "prettier --plugin-search-dir . --check . && eslint .",
+    "format": "prettier --plugin-search-dir . --write ."
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-static": "^2.0.3",
+    "@sveltejs/kit": "^1.30.4",
+    "@types/three": "^0.180.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.28.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-svelte": "^2.30.0",
+    "postcss": "^8.4.32",
+    "prettier": "^3.0.0",
+    "prettier-plugin-svelte": "^3.0.0",
+    "svelte": "^4.2.7",
+    "svelte-check": "^3.6.0",
+    "tailwindcss": "^3.3.6",
+    "tslib": "^2.4.1",
+    "typescript": "^5.0.0",
+    "vite": "^4.4.2"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.19.0",
+    "@tailwindcss/typography": "^0.5.10",
+    "three": "^0.159.0"
+  },
+  "type": "module",
+  "keywords": [
+    "ai",
+    "avatar",
+    "svelte",
+    "talkinghead",
+    "firebase",
+    "gemini",
+    "web-speech",
+    "3d-avatar"
+  ],
+  "author": "AI Avatar PoC Team",
+  "license": "MIT"
+}
