@@ -154,9 +154,9 @@ export class AvatarService {
 		
 		// Remove background plane - avatar will be on transparent background
 		
-		// Position camera (20% closer for zoom)
-		this.camera.position.set(0, 1.5, 1.6); // Changed from 2 to 1.6 (20% closer)
-		this.camera.lookAt(0, 1.5, 0);
+		// Position camera to show full avatar body with proper framing
+		this.camera.position.set(0, 0.8, 2.2); // Adjusted for full body view
+		this.camera.lookAt(0, 0.8, 0); // Look at torso level for better framing
 		
 		// Load Ready Player Me avatar
 		if (config.readyPlayerMeUrl) {
@@ -246,7 +246,8 @@ export class AvatarService {
 					
 					// Scale and position avatar
 					this.avatarModel.scale.set(1, 1, 1);
-					this.avatarModel.position.set(0, 0, 0);
+					// Position avatar slightly up so feet are visible
+					this.avatarModel.position.set(0, -0.2, 0);
 					
 					console.log('✅ Ready Player Me avatar loaded successfully');
 					resolve();
@@ -360,7 +361,7 @@ export class AvatarService {
 			// Reset to default position
 			if (this.avatarModel) {
 				this.avatarModel.scale.setScalar(1);
-				this.avatarModel.position.y = 0;
+				this.avatarModel.position.y = -0.2; // Maintain consistent positioning
 			}
 		}
 	}
@@ -1031,7 +1032,7 @@ export class AvatarService {
 				this.avatarModel.rotation.y = 0;
 				this.avatarModel.rotation.z = 0;
 				this.avatarModel.position.x = 0;
-				this.avatarModel.position.y = 0;
+				this.avatarModel.position.y = -0.2; // Maintain consistent positioning
 				this.avatarModel.position.z = 0;
 				this.avatarModel.scale.setScalar(1);
 			}

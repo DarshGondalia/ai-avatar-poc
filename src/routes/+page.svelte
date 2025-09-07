@@ -483,6 +483,12 @@
 					class:avatar-thinking={$avatar.status === 'thinking'}
 					style="margin: 0; padding: 0;"
 				>
+					<!-- Speaking Indicator -->
+					{#if $avatar.status === 'speaking'}
+						<div class="speaking-indicator">
+							🗣️ Dominic is speaking! Turn up the volume to tune in
+						</div>
+					{/if}
 					<!-- Avatar will be rendered here -->
 				</div>
 

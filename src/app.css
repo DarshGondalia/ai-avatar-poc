@@ -48,7 +48,7 @@ body {
 
 /* Avatar Animation Classes */
 .avatar-speaking {
-  @apply animate-pulse-slow;
+  @apply relative;
 }
 
 .avatar-listening {
@@ -57,6 +57,14 @@ body {
 
 .avatar-thinking {
   @apply opacity-75 animate-bounce-gentle;
+}
+
+/* Speaking Indicator */
+.speaking-indicator {
+  @apply absolute top-4 left-1/2 transform -translate-x-1/2;
+  @apply bg-green-500 text-white px-4 py-2 rounded-full shadow-lg;
+  @apply font-bold text-sm z-10;
+  @apply animate-bounce;
 }
 
 /* Responsive Design */
