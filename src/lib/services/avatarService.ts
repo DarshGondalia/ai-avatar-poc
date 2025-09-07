@@ -154,8 +154,8 @@ export class AvatarService {
 		
 		// Remove background plane - avatar will be on transparent background
 		
-		// Position camera to show full avatar body with proper framing
-		this.camera.position.set(0, 0.8, 2.2); // Adjusted for full body view
+		// Position camera with 30% zoom in from previous position
+		this.camera.position.set(0, 0.8, 1.54); // 30% closer: 2.2 * 0.7 = 1.54
 		this.camera.lookAt(0, 0.8, 0); // Look at torso level for better framing
 		
 		// Load Ready Player Me avatar
