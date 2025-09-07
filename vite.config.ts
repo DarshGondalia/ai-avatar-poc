@@ -7,14 +7,9 @@ export default defineConfig({
 		include: ['three', '@google/generative-ai']
 	},
 	build: {
-		target: 'es2020',
-		rollupOptions: {
-			output: {
-				manualChunks: {
-					three: ['three'],
-					gemini: ['@google/generative-ai']
-				}
-			}
-		}
+		target: 'es2020'
+	},
+	ssr: {
+		noExternal: ['three']
 	}
 });

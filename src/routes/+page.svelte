@@ -23,28 +23,64 @@
 	let shouldAutoScroll = true;
 	let speechEnabled = false; // Global speech toggle
 
-	// Gemini API configuration (loaded from environment)
-	//const geminiConfig: AIServiceConfig = {
-	//	apiKey: import.meta.env.VITE_GEMINI_API_KEY || "your-gemini-api-key",
-	//	modelName: import.meta.env.VITE_AI_MODEL_NAME || "gemini-1.5-flash",
-	//	rateLimitConfig: {
-	//		maxRequests: 50,
-	//		windowMs: 60000
-	//	}
-	//};
-	const geminiConfig: AIServiceConfig = {
-		apiKey: import.meta.env.VITE_GEMINI_API_KEY || 
-				// For GitHub Pages, you can embed the key or prompt user
-				prompt('Please enter your Gemini API key:') || 
-				'demo-mode',
+	// API key state management for GitHub Pages deployment
+	let apiKey = '';
+	let showApiKeySetup = false;
+
+	// Gemini API configuration with runtime key handling
+	const getGeminiConfig = (): AIServiceConfig => ({
+		apiKey: apiKey || import.meta.env.VITE_GEMINI_API_KEY || '',
 		modelName: import.meta.env.VITE_AI_MODEL_NAME || "gemini-1.5-flash",
 		rateLimitConfig: {
 			maxRequests: 50,
 			windowMs: 60000
 		}
-	};
+	});
+
+	// Check for saved API key on load
+	function loadApiKey() {
+		if (typeof localStorage !== 'undefined') {
+			const savedKey = localStorage.getItem('gemini-api-key');
+			if (savedKey) {
+				apiKey = savedKey;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// Save API key to localStorage
+	function saveApiKey() {
+		if (typeof localStorage !== 'undefined' && apiKey.trim()) {
+			localStorage.setItem('gemini-api-key', apiKey.trim());
+			showApiKeySetup = false;
+			// Reinitialize AI service with new key
+			initializeAIService();
+		}
+	}
+
+	// Separate AI service initialization function
+	function initializeAIService() {
+		try {
+			const config = getGeminiConfig();
+			if (config.apiKey && config.apiKey !== "your-gemini-api-key") {
+				aiService = getAIService(config);
+				console.log('✅ AI Service initialized');
+				errorMessage = '';
+			} else {
+				console.warn('⚠️ Gemini API key not set. AI features disabled.');
+				showApiKeySetup = true;
+			}
+		} catch (error) {
+			console.error('AI service initialization failed:', error);
+			errorMessage = 'AI service unavailable. Please check your configuration.';
+		}
+	}
 
 	onMount(async () => {
+		// Load saved API key first
+		const hasApiKey = loadApiKey();
+		
 		// Initialize avatar service
 		if (avatarContainer) {
 			try {
@@ -71,19 +107,8 @@
 			}
 		}
 
-		// Initialize AI service (only if Gemini API key is properly set)
-		try {
-			if (geminiConfig.apiKey !== "your-gemini-api-key") {
-				aiService = getAIService(geminiConfig);
-				console.log('✅ AI Service initialized');
-			} else {
-				console.warn('⚠️ Gemini API key not set. AI features disabled.');
-				errorMessage = 'AI service not configured. Please check INSTRUCTIONS.md for setup.';
-			}
-		} catch (error) {
-			console.error('AI service initialization failed:', error);
-			errorMessage = 'AI service unavailable. Please check your configuration.';
-		}
+		// Initialize AI service
+		initializeAIService();
 
 		// Initialize speech recognition
 		speechService.onRecognitionResult((result) => {
@@ -627,3 +652,43 @@
 		</div>
 	</div>
 </div>
+
+<!-- API Key Setup Modal for GitHub Pages -->
+{#if showApiKeySetup}
+	<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+		<div class="bg-white dark:bg-gray-800 p-8 rounded-2xl max-w-md mx-4 shadow-2xl">
+			<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">🔑 API Key Setup</h2>
+			<p class="mb-4 text-gray-600 dark:text-gray-400">
+				To use AI features, please enter your Gemini API key. 
+				<a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" class="text-blue-600 underline">
+					Get your free API key here
+				</a>
+			</p>
+			<input 
+				bind:value={apiKey} 
+				type="password" 
+				placeholder="Enter your Gemini API key..."
+				class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg mb-4 focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+				on:keydown={(e) => e.key === 'Enter' && saveApiKey()}
+			/>
+			<div class="flex space-x-3">
+				<button 
+					on:click={saveApiKey}
+					disabled={!apiKey.trim()}
+					class="flex-1 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white p-3 rounded-lg font-medium transition-colors disabled:cursor-not-allowed"
+				>
+					Save & Continue
+				</button>
+				<button 
+					on:click={() => showApiKeySetup = false}
+					class="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+				>
+					Skip
+				</button>
+			</div>
+			<p class="text-xs text-gray-500 dark:text-gray-400 mt-3">
+				Your API key is stored locally in your browser and never shared.
+			</p>
+		</div>
+	</div>
+{/if}
