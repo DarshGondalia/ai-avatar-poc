@@ -109,6 +109,14 @@ Always prioritize safety and recommend authorized Triumph dealers for complex re
 		}
 	}
 
+	// Sanitize text to remove non-ASCII characters that cause header issues
+	private sanitizeText(text: string): string {
+		return text
+			.replace(/[^\x00-\x7F]/g, '') // Remove non-ASCII characters
+			.replace(/\s+/g, ' ') // Normalize whitespace
+			.trim();
+	}
+
 	async generateResponse(
 		userMessage: string, 
 		conversationHistory: Array<{role: 'user' | 'assistant', content: string}> = []
@@ -125,10 +133,13 @@ Always prioritize safety and recommend authorized Triumph dealers for complex re
 		const startTime = Date.now();
 
 		try {
-			// Build conversation context
+			// Sanitize input text to prevent encoding issues
+			const sanitizedUserMessage = this.sanitizeText(userMessage);
+			
+			// Build conversation context with sanitized text
 			const contextMessages = conversationHistory
 				.slice(-10) // Keep last 10 exchanges for context
-				.map(msg => `${msg.role === 'user' ? 'User' : 'Dominic'}: ${msg.content}`)
+				.map(msg => `${msg.role === 'user' ? 'User' : 'Dominic'}: ${this.sanitizeText(msg.content)}`)
 				.join('\n\n');
 
 			const prompt = `${this.systemPrompt}
@@ -136,7 +147,7 @@ Always prioritize safety and recommend authorized Triumph dealers for complex re
 Previous conversation:
 ${contextMessages}
 
-Current user message: ${userMessage}
+Current user message: ${sanitizedUserMessage}
 
 Please respond as Dominic Toretto, the Triumph motorcycle specialist (remember: 50-100 words unless technical detail requires more):`;
 

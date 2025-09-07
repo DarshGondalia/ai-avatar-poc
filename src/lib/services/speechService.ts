@@ -281,7 +281,30 @@ export class SpeechService {
 
 			this.recognition.onerror = (event: any) => {
 				this.isListening = false;
-				reject(new Error(`Speech recognition error: ${event.error}`));
+				let errorMessage = 'Speech recognition error';
+				
+				switch(event.error) {
+					case 'not-allowed':
+					case 'permission-denied':
+						errorMessage = 'Microphone permission denied. Please allow microphone access and try again.';
+						break;
+					case 'no-speech':
+						errorMessage = 'No speech detected. Please try speaking closer to the microphone.';
+						break;
+					case 'audio-capture':
+						errorMessage = 'No microphone found. Please check your microphone connection.';
+						break;
+					case 'network':
+						errorMessage = 'Network error during speech recognition. Please check your connection.';
+						break;
+					case 'service-not-allowed':
+						errorMessage = 'Speech recognition service not available. This feature requires HTTPS.';
+						break;
+					default:
+						errorMessage = `Speech recognition error: ${event.error}`;
+				}
+				
+				reject(new Error(errorMessage));
 			};
 
 			this.recognition.onend = () => {
