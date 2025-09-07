@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
+	import { base } from '$app/paths';
 	import { 
 		messages, 
 		avatar, 
@@ -85,12 +86,12 @@
 		if (avatarContainer) {
 			try {
 				await avatarService.initialize(avatarContainer, {
-					avatarUrl: '/avatars/dominic_animated.glb',
+					avatarUrl: `${base}/avatars/dominic_animated.glb`,
 					body: 'M',
 					mood: 'professional',
 					voice: 'en-US-Standard-B',
 					language: 'en-US',
-					readyPlayerMeUrl: '/avatars/dominic_animated.glb',
+					readyPlayerMeUrl: `${base}/avatars/dominic_animated.glb`,
 					use3D: true
 				});
 
